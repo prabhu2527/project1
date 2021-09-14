@@ -1,0 +1,28 @@
+hosts: "{{ env }}"
+  become: yes
+  tasks: 
+    - name: remove any previous app services
+      shell: | 
+         if [ `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}' | wc -l` -gt 0 ]; then  
+            docker service rm `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}'`
+         else 
+            echo "No Service found"
+         fi
+    - name: super user
+      shell: sudo su -
+    - name: remove docker engine
+      shell: sudo apt-get remove docker docker-engine docker.io containerd runc
+    - name: get update
+      shell: sudo apt-get update
+    - name: install certificates
+      shell: sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    - name: SSL
+      shell: sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    - name: Add Repository
+      shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    - name: update
+      shell: sudo apt-get update
+    - name: install docker
+      shell: sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+    - name: check the installation is successful
+      shell: docker run hello-world
