@@ -9,4 +9,4 @@
             echo "No Service found"
          fi
     - name: docker run
-      shell: sudo docker run -d "{{ tag }}"
+      shell: sudo docker run -d -p 9080:8080 "{{ tag }}"
