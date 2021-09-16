@@ -3,8 +3,9 @@
   tasks: 
     - name: remove any previous app services
       shell: | 
-         if [ `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}' | wc -l` -gt 0 ]; then  
-            docker service rm `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}'`
+         if [ `docker  ps | grep -v NAME | grep project1 | awk '{print $1}' | wc -l` -gt 0 ]; then  
+            docker stop `docker ps | grep -v NAME | grep project1 | awk '{print $1}'`
+            docker rm `docker ps | grep -v NAME | grep project1 | awk '{print $1}'`
          else 
-            echo "No Service found"
+            echo "No process found"
          fi
