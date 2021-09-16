@@ -1,4 +1,4 @@
-hosts: "{{ env }}"
+- hosts: "{{ env }}"
   become: yes
   tasks: 
     - name: remove any previous app services
@@ -8,8 +8,6 @@ hosts: "{{ env }}"
          else 
             echo "No Service found"
          fi
-    - name: super user
-      shell: sudo su -
     - name: remove docker engine
       shell: sudo apt-get remove docker docker-engine docker.io containerd runc
     - name: get update
